@@ -17,7 +17,7 @@ Este es un bot de Discord.
 
 ## Uso
 
-1.  Ejecuta el bot: `python bot.py`
+1.  Ejecuta el bot: `python main.py`
 
 ## Licencia
 
@@ -25,4 +25,4 @@ Este proyecto está licenciado bajo la licencia MIT.
 
 ## Contacto
 
-[Tu nombre] - [Tu correo electrónico]
+David Sandoval - daelsand@espol.edu.ec
