@@ -14,6 +14,31 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 
 # Historial de chat por canal
 chat_history = {}
+canales_permitidos = []
+
+@bot.command(name='set_channel')
+async def set_channel(ctx):
+    if ctx.channel.id not in canales_permitidos:
+        canales_permitidos.append(ctx.channel.id)
+        await ctx.send(f"Canal {ctx.channel.name} añadido a la lista de canales permitidos.")
+    else:
+        await ctx.send(f"El canal {ctx.channel.name} ya está en la lista de canales permitidos.")
+
+@bot.command(name='remove_channel')
+async def remove_channel(ctx):
+    if ctx.channel.id in canales_permitidos:
+        canales_permitidos.remove(ctx.channel.id)
+        await ctx.send(f"Canal {ctx.channel.name} eliminado de la lista de canales permitidos.")
+    else:
+        await ctx.send(f"El canal {ctx.channel.name} no está en la lista de canales permitidos.")
+
+@bot.command(name='clear_history')
+async def clear_history(ctx):
+    if ctx.channel.id in chat_history:
+        del chat_history[ctx.channel.id]
+        await ctx.send(f"Historial de chat para el canal {ctx.channel.name} ha sido borrado.")
+    else:
+        await ctx.send(f"No hay historial de chat para el canal {ctx.channel.name}.")
 
 @bot.command(name='q')
 async def q(ctx, *, pregunta):
@@ -39,7 +64,12 @@ async def q(ctx, *, pregunta):
 async def on_message(message):
     # Evitar que el bot responda a sus propios mensajes
     if message.author == bot.user: return
+    if message.channel.id not in canales_permitidos: return
+    if message.channel.id not in chat_history:
+        chat_history[message.channel.id] = []
 
+    if len(chat_history[message.channel.id]) > 30:
+        for i in range(10): chat_history[message.channel.id].pop(0)
     agregar_a_historial(message, chat_history)
 
     # Evitar responder aleatoriamente a comandos
