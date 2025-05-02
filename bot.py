@@ -50,7 +50,7 @@ async def q(ctx, *, pregunta):
         
         if respuesta and hasattr(respuesta, 'text') and respuesta.text:
             texto = respuesta.text.strip()
-            texto = re.sub(r'.*ßß', '', texto)
+            texto = re.sub(r'.*ß', '', texto)
             chat_history[ctx.message.channel.id].append(f"Botß{texto}")
             for chunk in [texto[i:i+2000] for i in range(0, len(texto), 2000)]:
                 await ctx.message.channel.send(chunk)
