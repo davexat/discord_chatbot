@@ -103,8 +103,6 @@ async def on_message(message):
                         await message.channel.send(chunk)
             else:
                 await message.channel.send("No se pudo generar una respuesta válida")
-
-            print(chat_history)
         except Exception as e:
             await message.channel.send(f"Error al generar la respuesta: {str(e)}")
 
