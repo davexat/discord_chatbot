@@ -64,6 +64,11 @@ async def q(ctx, *, pregunta):
 async def on_message(message):
     # Evitar que el bot responda a sus propios mensajes
     if message.author == bot.user: return
+    # Evitar responder aleatoriamente a comandos
+    if message.content.startswith("!"):
+        await bot.process_commands(message)
+        return
+    # Evitar responder en canales no permitidos
     if message.channel.id not in canales_permitidos: return
     if message.channel.id not in chat_history:
         chat_history[message.channel.id] = []
@@ -71,11 +76,6 @@ async def on_message(message):
     if len(chat_history[message.channel.id]) > 30:
         for i in range(10): chat_history[message.channel.id].pop(0)
     agregar_a_historial(message, chat_history)
-
-    # Evitar responder aleatoriamente a comandos
-    if message.content.startswith("!"):
-        await bot.process_commands(message)
-        return
 
     mencion = bot.user in message.mentions
     referencia_al_bot = False
@@ -88,7 +88,7 @@ async def on_message(message):
         except Exception as e:
             print(f"Error al obtener el mensaje referenciado: {e}")
 
-    if random.random() < 1/50 or mencion or referencia_al_bot:
+    if random.random() < 1/20 or mencion or referencia_al_bot:
         try:
             respuesta = responder(message, chat_history)
 
