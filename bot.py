@@ -40,8 +40,8 @@ async def clear_history(ctx):
     else:
         await ctx.send(f"No hay historial de chat para el canal {ctx.channel.name}.")
 
-@bot.command(name='q')
-async def q(ctx, *, pregunta):
+@bot.command(name='query')
+async def query(ctx, *, pregunta):
     if not pregunta:
         await ctx.send("Por favor, proporciona una pregunta válida.")
         return
